@@ -17,6 +17,8 @@ body {
     overflow-y: auto; /* Allow scrolling for output */
     padding: 10px;
     box-sizing: border-box; /* Ensures padding doesn't add to width */
+    position: relative; /* For background watermark positioning */
+    z-index: 1; /* Ensures terminal is above the watermark */
 }
 
 /* The area where command results are printed */
@@ -55,3 +57,4 @@ body {
 .command-echo {
     color: #9cdcfe; /* Light blue for commands */
 }
+
