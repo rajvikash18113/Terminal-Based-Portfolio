@@ -1,0 +1,57 @@
+/* General body styling */
+body {
+    background-color: #1e1e1e; /* A dark editor-like background */
+    color: #d4d4d4; /* Light grey text color */
+    font-family: 'Fira Code', monospace; /* Monospaced font */
+    font-size: 16px;
+    margin: 0;
+    padding: 20px;
+}
+
+/* The main terminal window */
+#terminal {
+    width: 100%;
+    height: 90vh;
+    border: 1px solid #333;
+    background-color: #121212; /* Slightly darker than body */
+    overflow-y: auto; /* Allow scrolling for output */
+    padding: 10px;
+    box-sizing: border-box; /* Ensures padding doesn't add to width */
+}
+
+/* The area where command results are printed */
+#output div {
+    margin-bottom: 5px;
+}
+
+/* The line containing the prompt and input field */
+.input-line {
+    display: flex;
+    align-items: center;
+}
+
+/* The prompt text 'guest@vikash.dev:~$' */
+.prompt {
+    color: #569cd6; /* A nice blue color */
+    margin-right: 8px;
+}
+
+/* The actual input field */
+#command-input {
+    background-color: transparent;
+    border: none;
+    color: #d4d4d4;
+    font-family: 'Fira Code', monospace;
+    font-size: 16px;
+    flex-grow: 1; /* Take up the remaining space */
+}
+
+/* Remove the default focus outline */
+#command-input:focus {
+    outline: none;
+}
+
+/* Styling for command text echoed back */
+.command-echo {
+    color: #9cdcfe; /* Light blue for commands */
+}
