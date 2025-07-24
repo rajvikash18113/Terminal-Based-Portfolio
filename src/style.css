@@ -1,60 +1,185 @@
-/* General body styling */
+/* STEP 1: Define color variables for the default dark theme.
+  We use :root so these variables are available everywhere.
+*/
+:root {
+  --background-color: #1e1e1e;
+  --terminal-bg-color: #121212;
+  --text-color: #d4d4d4;
+  --prompt-color: #569cd6;
+  --command-echo-color: #9cdcfe;
+  --border-color: #333;
+  --watermark-color: #ffffff;
+  --watermark-opacity: 0.05;
+}
+
+/* STEP 2: Define the Light Theme. 
+  When the body has the 'light-theme' class, these variables will override the default ones.
+*/
+body.light-theme {
+  --background-color: #fafafa;
+  --terminal-bg-color: #ffffff;
+  --text-color: #333333;
+  --prompt-color: #0055b3;
+  --command-echo-color: #0d78e4;
+  --border-color: #cccccc;
+  --watermark-color: #000000;
+  --watermark-opacity: 0.03;
+}
+
+/* STEP 3: Define the Matrix Theme.
+*/
+body.matrix-theme {
+  --background-color: #000000;
+  --terminal-bg-color: #020202;
+  --text-color: #00FF41;
+  --prompt-color: #00FF41;
+  --command-echo-color: #6eff8f;
+  --border-color: #00FF41;
+  --watermark-color: #00FF41;
+  --watermark-opacity: 0.05;
+}
+
+
+/* STEP 4: Update existing styles to USE the variables.
+  Now our styles are theme-agnostic.
+*/
 body {
-    background-color: #1e1e1e; /* A dark editor-like background */
-    color: #d4d4d4; /* Light grey text color */
-    font-family: 'Fira Code', monospace; /* Monospaced font */
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Fira Code', monospace;
     font-size: 16px;
     margin: 0;
     padding: 20px;
 }
 
-/* The main terminal window */
+.background-ascii {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.5vw;
+    line-height: 1.2;
+    color: var(--watermark-color);
+    opacity: var(--watermark-opacity);
+    z-index: 0;
+    user-select: none;
+    pointer-events: none;
+}
+
 #terminal {
     width: 100%;
     height: 90vh;
-    border: 1px solid #333;
-    background-color: #121212; /* Slightly darker than body */
-    overflow-y: auto; /* Allow scrolling for output */
+    border: 1px solid var(--border-color);
+    background-color: var(--terminal-bg-color);
+    overflow-y: auto;
     padding: 10px;
-    box-sizing: border-box; /* Ensures padding doesn't add to width */
-    position: relative; /* For background watermark positioning */
-    z-index: 1; /* Ensures terminal is above the watermark */
+    box-sizing: border-box;
+    position: relative;
+    z-index: 1;
 }
 
-/* The area where command results are printed */
+/* Add this new style block to style.css */
+
+#matrix-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0; /* Sits behind the terminal (which is on z-index: 1) */
+}
+
 #output div {
     margin-bottom: 5px;
 }
 
-/* The line containing the prompt and input field */
 .input-line {
     display: flex;
     align-items: center;
 }
 
-/* The prompt text 'guest@vikash.dev:~$' */
 .prompt {
-    color: #569cd6; /* A nice blue color */
+    color: var(--prompt-color);
     margin-right: 8px;
 }
 
-/* The actual input field */
 #command-input {
     background-color: transparent;
     border: none;
-    color: #d4d4d4;
+    color: var(--text-color);
     font-family: 'Fira Code', monospace;
     font-size: 16px;
-    flex-grow: 1; /* Take up the remaining space */
+    flex-grow: 1;
 }
 
-/* Remove the default focus outline */
 #command-input:focus {
     outline: none;
 }
 
-/* Styling for command text echoed back */
 .command-echo {
-    color: #9cdcfe; /* Light blue for commands */
+    color: var(--command-echo-color);
 }
 
+/* --- Custom Music Toggle Switch --- */
+.toggle-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+}
+
+/* Hide the actual checkbox input */
+#music-checkbox {
+    display: none;
+}
+
+/* The track of the switch */
+.toggle-label {
+    display: block;
+    width: 60px;
+    height: 30px;
+    background-color: #444; /* Off state color */
+    border-radius: 15px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* The thumb of the switch */
+.toggle-thumb {
+    position: absolute;
+    top: 3px;
+    left: 4px;
+    width: 24px;
+    height: 24px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+/* The magic: styles for when the switch is ON */
+#music-checkbox:checked + .toggle-label {
+    background-color: var(--prompt-color); /* Use your theme's active color */
+}
+
+#music-checkbox:checked + .toggle-label .toggle-thumb {
+    transform: translateX(29px); /* Move the thumb to the right */
+}
+
+/* Styling for the ON/OFF text */
+.toggle-label::after {
+    content: 'OFF';
+    position: absolute;
+    right: 9px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    font-weight: bold;
+    color: #fff;
+}
+
+#music-checkbox:checked + .toggle-label::after {
+    content: 'ON';
+    left: 10px;
+    right: auto;
+}
