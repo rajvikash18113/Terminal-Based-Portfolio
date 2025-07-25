@@ -2,41 +2,41 @@
   We use :root so these variables are available everywhere.
 */
 :root {
-  --background-color: #1e1e1e;
-  --terminal-bg-color: #121212;
-  --text-color: #d4d4d4;
-  --prompt-color: #569cd6;
-  --command-echo-color: #9cdcfe;
-  --border-color: #333;
-  --watermark-color: #ffffff;
-  --watermark-opacity: 0.05;
+    --background-color: #1e1e1e;
+    --terminal-bg-color: #121212;
+    --text-color: #d4d4d4;
+    --prompt-color: #569cd6;
+    --command-echo-color: #9cdcfe;
+    --border-color: #333;
+    --watermark-color: #ffffff;
+    --watermark-opacity: 0.05;
 }
 
 /* STEP 2: Define the Light Theme. 
   When the body has the 'light-theme' class, these variables will override the default ones.
 */
 body.light-theme {
-  --background-color: #fafafa;
-  --terminal-bg-color: #ffffff;
-  --text-color: #333333;
-  --prompt-color: #0055b3;
-  --command-echo-color: #0d78e4;
-  --border-color: #cccccc;
-  --watermark-color: #000000;
-  --watermark-opacity: 0.03;
+    --background-color: #fafafa;
+    --terminal-bg-color: #ffffff;
+    --text-color: #333333;
+    --prompt-color: #0055b3;
+    --command-echo-color: #0d78e4;
+    --border-color: #cccccc;
+    --watermark-color: #000000;
+    --watermark-opacity: 0.03;
 }
 
 /* STEP 3: Define the Matrix Theme.
 */
 body.matrix-theme {
-  --background-color: #000000;
-  --terminal-bg-color: #020202;
-  --text-color: #00FF41;
-  --prompt-color: #00FF41;
-  --command-echo-color: #6eff8f;
-  --border-color: #00FF41;
-  --watermark-color: #00FF41;
-  --watermark-opacity: 0.05;
+    --background-color: #000000;
+    --terminal-bg-color: #020202;
+    --text-color: #00FF41;
+    --prompt-color: #00FF41;
+    --command-echo-color: #6eff8f;
+    --border-color: #00FF41;
+    --watermark-color: #00FF41;
+    --watermark-opacity: 0.05;
 }
 
 
@@ -44,8 +44,11 @@ body.matrix-theme {
   Now our styles are theme-agnostic.
 */
 body {
-    background-color: var(--background-color);
-    color: var(--text-color);
+    /* background-color: var(--background-color);
+    color: var(--text-color); */
+
+    background-color: #0f172a;
+    color: #e2e8f0;
     font-family: 'Fira Code', monospace;
     font-size: 16px;
     margin: 0;
@@ -76,8 +79,13 @@ body {
     box-sizing: border-box;
     position: relative;
     z-index: 1;
-    /* opacity: 0.9; */
+    /* opacity: 1;
+    max-width: 1024px; 
+    width: 100%;       
+    margin: 0 auto;     */
 }
+
+
 
 /* Add this new style block to style.css */
 
@@ -87,7 +95,8 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 0; /* Sits behind the terminal (which is on z-index: 1) */
+    z-index: 0;
+    /* Sits behind the terminal (which is on z-index: 1) */
 }
 
 #output div {
@@ -139,7 +148,8 @@ body {
     display: block;
     width: 60px;
     height: 30px;
-    background-color: #444; /* Off state color */
+    background-color: #444;
+    /* Off state color */
     border-radius: 15px;
     position: relative;
     cursor: pointer;
@@ -159,12 +169,14 @@ body {
 }
 
 /* The magic: styles for when the switch is ON */
-#music-checkbox:checked + .toggle-label {
-    background-color: var(--prompt-color); /* Use your theme's active color */
+#music-checkbox:checked+.toggle-label {
+    background-color: var(--prompt-color);
+    /* Use your theme's active color */
 }
 
-#music-checkbox:checked + .toggle-label .toggle-thumb {
-    transform: translateX(29px); /* Move the thumb to the right */
+#music-checkbox:checked+.toggle-label .toggle-thumb {
+    transform: translateX(29px);
+    /* Move the thumb to the right */
 }
 
 /* Styling for the ON/OFF text */
@@ -179,8 +191,194 @@ body {
     color: #fff;
 }
 
-#music-checkbox:checked + .toggle-label::after {
+#music-checkbox:checked+.toggle-label::after {
     content: 'ON';
     left: 10px;
     right: auto;
+}
+
+/* --- Project Display Styles --- */
+
+.project-container h3 {
+    margin-top: 0;
+    color: var(--command-echo-color);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.project-container ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.project-container li {
+    margin-bottom: 5px;
+}
+
+.project-detail-tech-stack {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.project-detail-tech-stack span {
+    background-color: rgb(74, 74, 82);
+    color: white;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 14px;
+    margin-right: 5px;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+.project-detail-links {
+    margin-top: 20px;
+    /* This adds space above the buttons */
+}
+
+.project-detail-links a {
+    text-decoration: none;
+    color: white;
+    background-color: red;
+    padding: 3px 12px;
+    border-radius: 3px;
+    margin-right: 10px;
+    transition: opacity 0.3s ease;
+}
+
+.project-detail-links a:hover {
+    opacity: 0.8;
+}
+
+/* --- New Styles for the Projects List --- */
+
+/* This styles each individual box in the project list */
+.project-list-item {
+    border: 1px solid var(--prompt-color);
+    padding: 15px;
+    margin-top: 15px;
+    /* Replaces margin-bottom for better spacing */
+    border-radius: 5px;
+}
+
+/* Styles the project title (e.g., "1. E-commerce Platform") */
+.project-list-item h4 {
+    margin: 0 0 5px 0;
+    font-weight: bold;
+    color: var(--command-echo-color);
+}
+
+/* Styles the short description */
+.project-list-item p {
+    margin: 0 0 10px 0;
+}
+
+/* Styles the "Type 'project 1' for details" text */
+.project-list-item .prompt-text {
+    font-style: italic;
+    opacity: 0.7;
+    font-size: 14px;
+}
+
+/* --- NEW: Universal Box Styling for Command Outputs --- */
+
+/* The main container for any command's output */
+.output-box {
+    border: 1px solid #475569;
+    /* Default border color */
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 5px;
+    transition: border-color 0.3s ease;
+    /* Smooth transition for the border color */
+}
+
+/* The hover state for the main box */
+.output-box:hover {
+    border-color: #38bdf8;
+    /* Highlight border color on hover */
+    transform: translateY(-2px);
+    /* Optional: slight lift effect on hover */
+    box-shadow: 0 2px 10px rgba(56, 189, 248, 0.2);
+    /* Optional: a faint blue shadow for depth */
+}
+
+/* The smaller box for individual items like coding profiles or certificates */
+.output-box-item {
+    border: 1px solid #475569;
+    /* Default border color */
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 3px;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+/* The hover state for the smaller boxes */
+.output-box-item:hover {
+    border-color: #38bdf8;
+    /* Highlight border color on hover */
+    background-color: rgba(56, 189, 248, 0.1);
+    /* Optional: a faint blue background glow */
+}
+
+
+/* --- NEW: Add This Entire Block for a More Beautiful UI --- */
+
+/* 1. Smooth Animation for New Lines */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Apply the animation to all direct children of the output div */
+#output>div {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* 2. Enhanced Link and Prompt Styles */
+/* Add a subtle glow to the prompt and command text */
+.prompt,
+.command-echo {
+    text-shadow: 0 0 5px rgba(86, 156, 214, 0.5);
+}
+
+/* Add a hover effect to all links */
+#output a {
+    text-decoration: none;
+    /* Ensure no default underline */
+    border-bottom: 1px dotted var(--prompt-color);
+    transition: color 0.2s ease, border-bottom 0.2s ease;
+}
+
+#output a:hover {
+    color: var(--command-echo-color);
+    border-bottom: 1px solid var(--command-echo-color);
+}
+
+
+/* 3. Custom Scrollbar for the Terminal */
+#terminal::-webkit-scrollbar {
+    width: 8px;
+}
+
+#terminal::-webkit-scrollbar-track {
+    background: var(--terminal-bg-color);
+    /* Match the terminal background */
+}
+
+#terminal::-webkit-scrollbar-thumb {
+    background-color: var(--prompt-color);
+    border-radius: 4px;
+    border: 2px solid var(--terminal-bg-color);
+}
+
+#terminal::-webkit-scrollbar-thumb:hover {
+    background-color: var(--command-echo-color);
 }

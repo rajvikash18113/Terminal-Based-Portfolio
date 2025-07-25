@@ -1,4 +1,3 @@
-
 // We wrap our entire code in this event listener to ensure that the JavaScript
 // doesn't run until the HTML document is fully loaded and ready.
 document.addEventListener('DOMContentLoaded', () => {
@@ -11,89 +10,254 @@ document.addEventListener('DOMContentLoaded', () => {
     const terminal = document.getElementById('terminal'); // The main terminal container.    
     const prompt = document.querySelector('.prompt');             // The 'user@host:~$' text.
 
+    // --- 2. DATA & STATE MANAGEMENT ---
     const commandList = [
-        'command', 'about', 'skills', 'projects', 'coding',
+        'command', 'about', 'skills', 'projects', 'project', 'coding',
         'resume', 'certificate', 'contact', 'theme', 'light',
         'dark', 'matrix', 'github', 'clear'
     ];
 
-    //----------------------------- 2. HELPER FUNCTION: THEME SWITCHING --------------------------------------------//
-    /**
-     * applyTheme changes the visual theme of the portfolio.
-     * @param {string} themeName - The name of the theme to apply (e.g., 'light', 'dark').
-     */
-    function applyTheme(themeName) {
-        // First, reset to default by removing any existing theme classes from the body.
-        document.body.classList.remove('light-theme', 'matrix-theme');
+    const projectsData = {
+        '1': {
+            title: 'Terminal Based Portfolio',
+            description: 'An interactive portfolio that showcases my skills and projects in a terminal-like interface.',
+            tech: ['HTML5', 'CSS3', 'JavaScript (ES6+)'],
+            live: '#',
+            source: 'https://github.com/rajvikash18113'
+        },
+        '2': {
+            title: 'Smart Stock Portfolio Optimizer',
+            description: 'A web application that helps users manage their stock portfolios efficiently.',
+            tech: ['React', 'Node.js', 'API'],
+            live: '#',
+            source: 'https://github.com/rajvikash18113'
+        },
+        '3': {
+            title: 'Daily Task Tracker',
+            description: 'A simple task management app to keep track of daily tasks.',
+            tech: ['JavaScript', 'HTML', 'CSS'],
+            live: '#',
+            source: 'https://github.com/rajvikash18113'
+        }
+    };
 
-        // 'dark' is the default theme (no class needed), so we only add a class for other themes.
+    let commandHistory = [];
+    let historyIndex = 0;
+
+    // --- 3. HELPER FUNCTIONS ---
+
+    //----------------------------- THEME SWITCHING --------------------------------------------//
+    function applyTheme(themeName) {
+        document.body.classList.remove('light-theme', 'matrix-theme');
         if (themeName !== 'dark') {
             document.body.classList.add(`${themeName}-theme`);
         }
-        // Create a new div to display a confirmation message.
         const result = document.createElement('div');
         result.innerHTML = `Theme set to: ${themeName}`;
         output.appendChild(result);
     }
 
-    //--------------------- Fetches and displays public repositories from a GitHub user.-----------------------------------//
+    //--------------------- Fetches GitHub repos -----------------------------------//
+    // Find and replace the entire fetchGitHubRepos function in script.js
 
     async function fetchGitHubRepos() {
-        // IMPORTANT: Replace 'your-username-here' with your actual GitHub username.
         const githubUsername = 'rajvikash18113';
         const apiUrl = `https://api.github.com/users/${githubUsername}/repos?sort=updated&per_page=3`;
 
-        const output = document.getElementById('output');
-        let repoList = 'Fetching GitHub repositories...\n\n';
+        // Create the main container for the output
+        const resultContainer = document.createElement('div');
 
-        // Add a temporary "loading" message
-        const loadingMessage = document.createElement('div');
-        loadingMessage.innerHTML = repoList;
-        output.appendChild(loadingMessage);
+        // --- CHANGE 1: Add the main box class to the container ---
+        resultContainer.classList.add();
+
+        // Set the initial loading message inside the box
+        resultContainer.innerHTML = '<h3>Recent GitHub Repositories:</h3>Fetching...';
+        output.appendChild(resultContainer);
 
         try {
-            // Use await to wait for the API response
             const response = await fetch(apiUrl);
-
-            // Check if the request was successful
-            if (!response.ok) {
-                throw new Error(`GitHub API error: ${response.status} - ${response.statusText}`);
-            }
-
+            if (!response.ok) throw new Error(`GitHub API error: ${response.status}`);
             const repos = await response.json();
 
+            let repoListHTML; // This will hold the final list HTML
+
             if (repos.length === 0) {
-                repoList = 'No public repositories found.';
+                repoListHTML = '<p>No public repositories found.</p>';
             } else {
-                // Format the list of repositories
-                repoList = repos.map(repo =>
-                    `<strong><a href="${repo.html_url}" target="_blank">${repo.name}</a></strong> - ${repo.description || 'No description'}`
-                ).join('<br>');
+                // --- CHANGE 2: Wrap each repository in the item box class ---
+                repoListHTML = repos.map(repo =>
+                    `<div class="output-box">
+                    <strong><a href="${repo.html_url}" target="_blank">${repo.name}</a></strong>
+                    <p style="margin: 5px 0 0 0; opacity: 0.8;">${repo.description || 'No description'}</p>
+                </div>`
+                ).join(''); // Use join('') as the divs provide their own spacing
             }
 
-        } catch (error) {
-            // Handle any errors that occurred during the fetch
-            console.error('Failed to fetch GitHub repos:', error);
-            repoList = 'Error fetching GitHub repositories. Please check the username and your connection.';
-        }
+            // Update the container with the final, styled list
+            resultContainer.innerHTML = `<h3>Recent GitHub Repositories:</h3>${repoListHTML}`;
 
-        // Update the loading message with the final result
-        loadingMessage.innerHTML = repoList;
+        } catch (error) {
+            console.error('Failed to fetch GitHub repos:', error);
+            // Update the container with an error message
+            resultContainer.innerHTML = '<h3>Recent GitHub Repositories:</h3><p>Error fetching data. Please check your connection.</p>';
+        }
     }
 
-    //-------------------------------------------------- 3. WELCOME ANIMATION -----------------------------------------------------------------//
-    // This section controls the initial animated message that types itself out.
+    // --- 4. DEDICATED COMMAND FUNCTIONS ---
+
+    function showHelp() {
+        const result = document.createElement('div');
+        result.innerHTML = `
+            Available commands: <br>
+            
+            - <strong>about</strong>: Who am I? <br>
+            - <strong>skills</strong>: What can I do. <br> 
+            - <strong>projects</strong>: See a list of my work. <br>
+            - <strong>coding</strong>: Analyze my Coding Skills. <br> 
+            - <strong>resume</strong>: Get my Resume. <br>  
+            - <strong>certificate</strong>: See my Cerifications. <br>
+            - <strong>contact</strong>: Let's Connect. <br>
+            - <strong>theme</strong>: Shows the theme options. <br>
+            - <strong>github</strong>: See my recent works on GitHub. <br> 
+            - <strong>clear</strong>: Clear the terminal.
+            
+        `;
+        output.appendChild(result);
+    }
+
+    function showAbout() {
+        const result = document.createElement('div');
+        result.innerHTML = `
+            <div class="output-box">
+            Hello! I'm Vikash Kumar, a passionate Computer Science undergraduate with a love for solving complex problems and building efficient solutions. I have a strong interest in software development and enjoy bringing ideas to life using technologies like C++, and JavaScript. This passion isn't just academic; I have solved over 500 coding problems on CodeChef, LeetCode and various platforms. I'm always eager to learn and currently seeking opportunities to apply my problem-solving skills to real-world challenges. Feel free to explore my work or get in touch!
+            </div>
+        `;
+        output.appendChild(result);
+    }
+
+    function showSkills() {
+        const result = document.createElement('div');
+        result.innerHTML = `
+        <div class="output-box">
+            <strong>Languages:</strong> C++, Java, JavaScript, HTML/CSS <br>
+            <strong>Tools:</strong> Git, Github, VS Code <br>
+            <strong>Databases:</strong> MySQL, MongoDB
+        </div>
+        `;
+        output.appendChild(result);
+    }
+
+    function showProjects() {
+        const result = document.createElement('div');
+        let allProjectsHTML = '<h3>Projects:</h3>';
+        for (const id in projectsData) {
+            const project = projectsData[id];
+            allProjectsHTML += `
+                <div class="output-box">
+                    <h4>${id}. ${project.title}</h4>
+                    <p>${project.description}</p>
+                    <span class="prompt-text">Type "project ${id}" for details</span>
+                </div>
+            `;
+        }
+        result.innerHTML = allProjectsHTML;
+        output.appendChild(result);
+    }
+
+    function showProjectDetail(projectId) {
+        const result = document.createElement('div');
+        const project = projectsData[projectId];
+        if (project) {
+            let techHTML = '';
+            project.tech.forEach(tag => techHTML += `<span>${tag}</span>`);
+            result.classList.add('project-container', 'project-detail');
+            result.innerHTML = `
+            <div class="output-box">
+                <h3>${project.title}</h3>
+                <p>${project.description}</p>
+                <div class="project-detail-tech-stack">${techHTML}</div>
+                <div class="project-detail-links">
+                    <a href="${project.live}" target="_blank">Live Demo</a>
+                    <a href="${project.source}" target="_blank">Source Code</a>
+                </div>
+                </div>
+            `;
+        } else {
+            result.innerHTML = `Error: Project not found. Please use a valid project number (e.g., "project 1").`;
+        }
+        output.appendChild(result);
+    }
+
+    function showCoding() {
+        const result = document.createElement('div');
+        result.innerHTML = `
+            Here are my Coding Profiles: <br>
+            <div class="output-box">
+            1. <a href="https://leetcode.com/rajvikash18113/" target="_blank">Leetcode</a><br>
+            2. <a href="https://www.codechef.com/users/rajvikash18113" target="_blank">CodeChef</a><br>
+            3. <a href="https://www.geeksforgeeks.org/user/rajvikash18113/" target="_blank">GeeksForGeeks</a><br>
+            4. <a href="https://github.com/rajvikash18113" target="_blank">GitHub</a><br>
+            </div>
+        `;
+        output.appendChild(result);
+    }
+
+    function showResume() {
+        const result = document.createElement('div');
+        result.innerHTML = `
+            You can download my resume here: <br>
+            <div class="output-box">
+            <a href="doc/resume.pdf" target="_blank">Download Resume</a>
+            </div>
+        `;
+        output.appendChild(result);
+    }
+
+    function showCertificate() {
+        const result = document.createElement('div');
+        result.innerHTML = `
+            Here are my Certificates: <br>
+            <div class="output-box">
+            <a href="doc/certificate/learn-c++-codechef.pdf" target="_blank">Learn C++ (CodeChef) </a><br>
+            <a href="doc/certificate/problem-solving-hackerrank.pdf" target="_blank">Problem Solver (Hacker Rank) </a><br>
+            <a href="doc/certificate/web-dev-internship.pdf" target="_blank">Web Development</a><br>
+            <a href="doc/certificate/introduction-to-mongodb.pdf" target="_blank">Introduction to MongoDB </a><br>
+            <a href="doc/certificate/data-science-accenture.pdf" target="_blank">Data Science (Accenture) </a><br>
+            <a href="doc/certificate/summer-workshop-gfg.pdf" target="_blank">Summer Workshop (GFG)</a><br>
+            <a href="doc/certificate/ethical-hacker-cisco.pdf" target="_blank">Ethical hacker (Cisco) </a><br>
+            <a href="doc/certificate/cybersecurity-cisco.pdf" target="_blank">Cyber Security (Cisco) </a><br>
+            <a href="doc/certificate/it-essential-cisco.pdf" target="_blank">IT Essential (Cisco) </a><br>
+            <a href="doc/certificate/iot-cisco.pdf" target="_blank">IOT (Cisco)</a><br>
+            </div>
+        `;
+        output.appendChild(result);
+    }
+
+    function showContact() {
+        const result = document.createElement('div');
+        result.innerHTML = `
+            You can reach me via: <br>
+            <div class="output-box">
+            - <strong>Email:</strong> <a href="mailto:rajvikash18113@gmail.com">rajvikash18113@gmail.com</a> <br>
+            - <strong>LinkedIn:</strong> <a href="https://linkedin.com/in/rajvikash18113" target="_blank">linkedin.com/in/rajvikash18113</a> <br>
+            - <strong>GitHub:</strong> <a href="https://github.com/rajvikash18113" target="_blank">github.com/rajvikash18113</a>
+            </div>
+        `;
+        output.appendChild(result);
+    }
+
+    function clearTerminal() {
+        output.innerHTML = '';
+    }
+
+    //-------------------------------------------------- 5. WELCOME ANIMATION -----------------------------------------------------------------//
     const welcomeMessages = [
         { text: "Welcome to my interactive portfolio!", speed: 50 },
-        { text: "Type 'command' to see the list of available commands.", speed: 30 }
+        { text: "Type 'command' or 'help' to see the list of available commands.", speed: 30 }
     ];
 
-    /**
-     * displayWelcome types out the welcome messages one character at a time.
-     * The 'async' and 'await' keywords ensure that one line finishes before the next one starts.
-     */
     async function displayWelcome() {
-        commandInput.disabled = true; // Disable the input field during the animation.
+        commandInput.disabled = true;
         for (const message of welcomeMessages) {
             const line = document.createElement('div');
             output.appendChild(line);
@@ -103,264 +267,176 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (i < message.text.length) {
                         line.innerHTML += message.text.charAt(i);
                         i++;
-                        setTimeout(type, message.speed); // Wait before typing the next character.
+                        setTimeout(type, message.speed);
                     } else {
-                        resolve(); // This signals that the line is finished typing.
+                        resolve();
                     }
                 }
                 type();
             });
         }
         output.appendChild(document.createElement('br'));
-        commandInput.disabled = false; // Re-enable the input field.
-        commandInput.focus();          // Place the cursor in the input field.
+        commandInput.disabled = false;
+        commandInput.focus();
     }
 
-    // Starts the welcome animation automatically when the page loads.
     displayWelcome();
 
-    // --------------------------------- 4. EVENT LISTENERS ------------------------------------------------//
-    // This listener ensures that if the user clicks anywhere on the terminal, the input field is focused.
+    // --------------------------------- 6. EVENT LISTENERS ------------------------------------------------//
     document.getElementById('terminal').addEventListener('click', () => {
         commandInput.focus();
     });
 
-    // This is the main event listener. It triggers whenever the user presses a key in the input field.
     commandInput.addEventListener('keydown', (e) => {
-        // --- NEW: Handle Tab Autocompletion ---
         if (e.key === 'Tab') {
-            // Stop the browser from switching focus to another element
             e.preventDefault();
-
             const currentInput = commandInput.value.trim().toLowerCase();
-
-            // If the input is empty, do nothing
-            if (!currentInput) {
-                return;
-            }
-
-            // Find the first command in our list that starts with what the user has typed
+            if (!currentInput) return;
             const match = commandList.find(cmd => cmd.startsWith(currentInput));
-
-            // If a match is found, update the input field with the full command
-            if (match) {
-                commandInput.value = match;
-            }
-            return; // Exit the function after handling the Tab key
+            if (match) commandInput.value = match;
+            return;
         }
 
-        //--------------------------  Handle Enter Key-------------------------------//
+        if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            if (commandHistory.length > 0 && historyIndex > 0) {
+                historyIndex--;
+                commandInput.value = commandHistory[historyIndex];
+                setTimeout(() => commandInput.selectionStart = commandInput.selectionEnd = commandInput.value.length, 0);
+            }
+            return;
+        }
+
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            if (historyIndex < commandHistory.length - 1) {
+                historyIndex++;
+                commandInput.value = commandHistory[historyIndex];
+            } else {
+                historyIndex = commandHistory.length;
+                commandInput.value = '';
+            }
+            return;
+        }
+
         if (e.key === 'Enter' && !commandInput.disabled) {
             const command = commandInput.value.trim().toLowerCase();
-
             const commandEcho = document.createElement('div');
             commandEcho.innerHTML = `<span class="prompt">${prompt.textContent}</span> <span class="command-echo">${command}</span>`;
             output.appendChild(commandEcho);
-
-            processCommand(command);
-
+            if (command) {
+                processCommand(command);
+                commandHistory.push(command);
+            }
+            historyIndex = commandHistory.length;
             commandInput.value = '';
-            terminal.scrollTop = terminal.scrollHeight; // Scroll to the bottom of the terminal to show the latest output;
+            terminal.scrollTop = terminal.scrollHeight;
         }
     });
 
-    //---------------------------------5. COMMAND PROCESSING LOGIC(Switch Case) ------------------------------------------------//
-    /**
-     * processCommand is the "brain" of the terminal. It takes a command
-     * and decides what to do with it using a switch statement.
-     * @param {string} command - The command entered by the user.
-     */
+    //---------------------------------7. COMMAND PROCESSING LOGIC(Switch Case) ------------------------------------------------//
     function processCommand(command) {
-        const result = document.createElement('div');
+        const parts = command.split(' ');
+        const commandName = parts[0];
 
-        // The switch statement checks the command against a list of possible cases.
-        switch (command) {
+        switch (commandName) {
             case 'command':
-                result.innerHTML = `
-                    Available commands: <br>
-                    - <strong>about</strong>: Who am I? <br>
-                    - <strong>skills</strong>: What can I do. <br> 
-                    - <strong>projects</strong>: See my Work. <br> 
-                    - <strong>coding</strong>: Analyze my Coding Skills. <br> 
-                    - <strong>resume</strong>: Get my Resume. <br>  
-                    - <strong>certificate</strong>: See my Cerifications. <br>
-                    - <strong>contact</strong>: Let's Connect. <br>
-                    - <strong>theme</strong>: Shows the theme Color. <br>
-                    - <strong>github</strong>: See my recent works on GitHub. <br> 
-                    - <strong>clear</strong>: Clear the terminal.
-                `;
+            case 'help':
+                showHelp();
                 break;
-
-            // The 'theme' command is now purely informational.
+            case 'about':
+                showAbout();
+                break;
+            case 'skills':
+                showSkills();
+                break;
+            case 'projects':
+                showProjects();
+                break;
+            case 'project':
+                showProjectDetail(parts[1]);
+                break;
+            case 'coding':
+                showCoding();
+                break;
+            case 'resume':
+                showResume();
+                break;
+            case 'certificate':
+                showCertificate();
+                break;
+            case 'contact':
+                showContact();
+                break;
             case 'theme':
-                result.innerHTML = `Usage: Type 'light', 'dark', or 'matrix' to change the theme directly.`;
+                const themeResult = document.createElement('div');
+                themeResult.innerHTML = ` Type 'light', 'dark', or 'matrix' to change the theme.`;
+                output.appendChild(themeResult);
                 break;
-
-            // These cases handle the direct theme changes.
             case 'light':
             case 'dark':
             case 'matrix':
-                applyTheme(command); // The command itself is the theme name.
-                return; // We return early because applyTheme() handles its own output.
-
-            case 'about':
-                result.innerHTML = `
-                    
-                    Hello! I'm Vikash Kumar, a passionate Computer Science undergraduate with a love for solving complex problems and building efficient solutions. I have a strong interest in software development and enjoy bringing ideas to life using technologies like C++, and JavaScript. This passion isn't just academic; I have solved over 500 coding problems on CodeChef, LeetCode and various platforms. I'm always eager to learn and currently seeking opportunities to apply my problem-solving skills to real-world challenges. Feel free to explore my work or get in touch!
-                `;
+                applyTheme(commandName);
                 break;
-            case 'skills':
-                result.innerHTML = `
-                    <strong>Languages:</strong> C++, Java, JavaScript, HTML/CSS <br>
-                    <strong>Tools:</strong> Git, Github, VS Code <br>
-                    <strong>Databases:</strong> MySQL, MongoDB
-                `;
-                break;
-            case 'projects':
-                result.innerHTML = `
-                    Here are some of my projects: <br>
-                    1. <a href="https://github.com/rajvikash18113" target="_blank">Terminal Based Portfolio</a> - An interactive portfolio that showcases my skills and projects in a terminal-like interface. <br>
-                    2. <a href="https://github.com/rajvikash18113" target="_blank">Smart Stock Portfolio Optimizer</a> - A web application that helps users manage their stock portfolios efficiently. <br>
-                    3. <a href="https://github.com/rajvikash18113" target="_blank">Daily task Tracker</a> - A simple task management app to keep track of daily tasks.<br>
-                    4. <a href="https://github.com/rajvikash18113" target="_blank">Profile Card</a> - A simple profile card that showcases your social profiles.
-                `;
-                break;pr
-            case 'coding':
-                result.innerHTML = `
-                    Here are my Coding Profiles: <br>
-                    1. <a href="https://leetcode.com/rajvikash18113/" target="_blank">Leetcode</a><br>
-                    2. <a href="https://www.codechef.com/users/rajvikash18113" target="_blank">CodeChef</a><br>
-                    3. <a href="https://www.geeksforgeeks.org/user/rajvikash18113/" target="_blank">GeeksForGeeks</a><br>
-                    4. <a href="https://github.com/rajvikash18113" target="_blank">GitHub</a><br>
-                `;
-                break;
-            case 'resume':
-                result.innerHTML = `
-                    You can download my resume here: <br>
-                    <a href="doc/resume.pdf" target="_blank">Download Resume</a>
-                `;
-                break;
-            case 'certificate':
-                result.innerHTML = `
-                    Here are my Certificates: <br>
-                    <a href="doc/certificate/learn-c++-codechef.pdf" target="_blank">Learn C++ (CodeChef) </a><br>
-                    <a href="doc/certificate/problem-solving-hackerrank.pdf" target="_blank">Problem Solver (Hacker Rank) </a><br>
-                    <a href="doc/certificate/web-dev-internship.pdf" target="_blank">Web Development</a><br>
-                    <a href="doc/certificate/introduction-to-mongodb.pdf" target="_blank">Introduction to MongoDB </a><br>
-                    <a href="doc/certificate/data-science-accenture.pdf" target="_blank">Data Science (Accenture) </a><br>
-                    <a href="doc/certificate/summer-workshop-gfg.pdf" target="_blank">Summer Workshop (GFG)</a><br>
-                    <a href="doc/certificate/ethical-hacker-cisco.pdf" target="_blank">Ethical hacker (Cisco) </a><br>
-                    <a href="doc/certificate/cybersecurity-cisco.pdf" target="_blank">Cyber Security (Cisco) </a><br>
-                    <a href="doc/certificate/it-essential-cisco.pdf" target="_blank">IT Essential (Cisco) </a><br>
-                    <a href="doc/certificate/iot-cisco.pdf" target="_blank">IOT (Cisco)</a><br>
-                `;
-                break;
-            case 'contact':
-                result.innerHTML = `
-                    You can reach me via: <br>
-                    - <strong>Email:</strong> <a href="mailto:rajvikash18113@gmail.com">rajvikash18113@gmail.com</a> <br>
-                    - <strong>LinkedIn:</strong> <a href="https://linkedin.com/in/rajvikash18113" target="_blank">linkedin.com/in/rajvikash18113</a> <br>
-                    - <strong>GitHub:</strong> <a href="https://github.com/rajvikash18113" target="_blank">github.com/rajvikash18113</a>
-                `;
-                break;
-
-            // The 'fetch' command is used to get the latest GitHub repositories.
-            // Inside your processCommand function's switch statement
             case 'github':
-                fetchGitHubRepos(); // Call our new async function
-                return; // Return to prevent an extra empty line
-
-            // The 'clear' command is used to clear the terminal output.
+                fetchGitHubRepos();
+                break;
             case 'clear':
-                output.innerHTML = ''; // Clears all content from the output div.
-                return; // Return to prevent an empty div from being added.
-
-            // This 'default' case runs if the command doesn't match any of the above cases.
+                clearTerminal();
+                break;
             default:
-                result.innerHTML = `Command not found: ${command}. Type 'command' for a list of commands.`;
+                const errorResult = document.createElement('div');
+                errorResult.innerHTML = `Command not found: ${command}. Type 'command' or 'help' for a list of commands.`;
+                output.appendChild(errorResult);
                 break;
         }
-        // This adds the result of the command to the output area on the screen.
-        output.appendChild(result);
     }
 
-
-    //-------------------------------------- 7. MATRIX RAIN ANIMATION ---------------------------------------------//
+    //-------------------------------------- 8. MATRIX RAIN ANIMATION ---------------------------------------------//
     const canvas = document.getElementById('matrix-canvas');
     const ctx = canvas.getContext('2d');
-
-    // Set canvas to the full screen size
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-
-    // The characters that will be used for the rain
     const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
     const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const nums = '0123456789';
     const characters = katakana + latin + nums;
-
     const fontSize = 16;
     const columns = Math.floor(canvas.width / fontSize);
-
-    // 'drops' will store the y-position of the raindrop for each column
     const drops = [];
     for (let x = 0; x < columns; x++) {
         drops[x] = 1;
     }
-
     function draw() {
-        // Fill the canvas with a semi-transparent black to create the fading trail effect
         ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        // Set the color and font for the characters
-        ctx.fillStyle = '#0F0'; // Matrix Green
+        ctx.fillStyle = '#0F0';
         ctx.font = fontSize + 'px monospace';
-
-        // Loop through each column/drop
         for (let i = 0; i < drops.length; i++) {
-            // Get a random character from our set
             const text = characters.charAt(Math.floor(Math.random() * characters.length));
-
-            // Draw the character
             ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-            // Reset the drop back to the top if it goes off screen
-            // Add a random element to make the drops reset at different times
             if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
                 drops[i] = 0;
             }
-
-            // Move the drop down for the next frame
             drops[i]++;
         }
     }
-
-    // Start the animation loop
     setInterval(draw, 50);
-
-    // Optional: Resize the canvas if the window is resized
     window.addEventListener('resize', () => {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
     });
 
-
-
-    //----------------------------- 8. MUSIC TOGGLE ------------------------------------------------//
+    //----------------------------- 9. MUSIC TOGGLE ------------------------------------------------//
     const musicCheckbox = document.getElementById('music-checkbox');
     const audio = document.getElementById('background-audio');
-
-    // Set a low volume for the background music
     audio.volume = 0.1;
-
-    // Listen for a 'change' event on the checkbox
     musicCheckbox.addEventListener('change', () => {
-        // Check if the checkbox is now checked (ON)
         if (musicCheckbox.checked) {
             audio.play();
         } else {
             audio.pause();
         }
     });
+
 });
