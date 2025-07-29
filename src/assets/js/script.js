@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const result = document.createElement('div');
         result.innerHTML = `
             <div class="output-box">
-            Hello! I'm Vikash Kumar, a passionate Computer Science undergraduate with a love for solving complex problems and building efficient solutions. I have a strong interest in software development and enjoy bringing ideas to life using technologies like C++, and JavaScript. This passion isn't just academic; I have solved over 500 coding problems on CodeChef, LeetCode and various platforms. I'm always eager to learn and currently seeking opportunities to apply my problem-solving skills to real-world challenges. Feel free to explore my work or get in touch!
+            Hello! I'm Vikash Kumar, a passionate Computer Science undergraduate with a love for solving complex problems and building efficient solutions. I have a strong interest in software development and enjoy bringing ideas to life using technologies like C++, and JavaScript. This passion isn't just academic; I have solved over 500+ coding problems on CodeChef, LeetCode and various platforms. I'm always eager to learn and currently seeking opportunities to apply my problem-solving skills to real-world challenges. Feel free to explore my work or get in touch!
             </div>
         `;
         output.appendChild(result);
