@@ -139,9 +139,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const result = document.createElement('div');
         result.innerHTML = `
         <div class="output-box">
-            <strong>Languages:</strong> C++, Java, JavaScript, HTML/CSS <br>
-            <strong>Tools:</strong> Git, Github, VS Code <br>
-            <strong>Databases:</strong> MySQL, MongoDB
+            <strong>Languages:</strong> C++, Java, JavaScript, HTML, CSS, SQL <br>
+            <strong>Frameworks & Libraries:</strong> Node.js (Basics), Express.js (Basics), Bootstrap, Tailwind CSS <br>
+            <strong>Tools & Platforms:</strong> Git, GitHub, VS Code, Render, Netlify, Postman <br>
+            <strong>Databases:</strong> MySQL, MongoDB <br>
+            <strong>CS Fundamentals:</strong> Data Structures & Algorithms (C++), DBMS, OOPs, OS, Computer Networks (Basics) <br>
+            <strong>Others:</strong> API Integration, RESTful APIs, Problem Solving (Leetcode, GFG), Version Control
+
         </div>
         `;
         output.appendChild(result);
@@ -207,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
         result.innerHTML = `
             You can download my resume here: <br>
             <div class="output-box">
-            <a href="doc/resume.pdf" target="_blank">Download Resume</a>
+            <a href="src/doc/resume.pdf" target="_blank">Download Resume</a>
             </div>
         `;
         output.appendChild(result);
@@ -218,16 +222,16 @@ document.addEventListener('DOMContentLoaded', () => {
         result.innerHTML = `
             Here are my Certificates: <br>
             <div class="output-box">
-            <a href="doc/certificate/learn-c++-codechef.pdf" target="_blank">Learn C++ (CodeChef) </a><br>
-            <a href="doc/certificate/problem-solving-hackerrank.pdf" target="_blank">Problem Solver (Hacker Rank) </a><br>
-            <a href="doc/certificate/web-dev-internship.pdf" target="_blank">Web Development</a><br>
-            <a href="doc/certificate/introduction-to-mongodb.pdf" target="_blank">Introduction to MongoDB </a><br>
-            <a href="doc/certificate/data-science-accenture.pdf" target="_blank">Data Science (Accenture) </a><br>
-            <a href="doc/certificate/summer-workshop-gfg.pdf" target="_blank">Summer Workshop (GFG)</a><br>
-            <a href="doc/certificate/ethical-hacker-cisco.pdf" target="_blank">Ethical hacker (Cisco) </a><br>
-            <a href="doc/certificate/cybersecurity-cisco.pdf" target="_blank">Cyber Security (Cisco) </a><br>
-            <a href="doc/certificate/it-essential-cisco.pdf" target="_blank">IT Essential (Cisco) </a><br>
-            <a href="doc/certificate/iot-cisco.pdf" target="_blank">IOT (Cisco)</a><br>
+            <a href="src/doc/certificate/learn-c++-codechef.pdf" target="_blank">Learn C++ (CodeChef) </a><br>
+            <a href="src/doc/certificate/problem-solving-hackerrank.pdf" target="_blank">Problem Solver (Hacker Rank) </a><br>
+            <a href="src/doc/certificate/web-dev-internship.pdf" target="_blank">Web Development</a><br>
+            <a href="src/doc/certificate/introduction-to-mongodb.pdf" target="_blank">Introduction to MongoDB </a><br>
+            <a href="src/doc/certificate/data-science-accenture.pdf" target="_blank">Data Science (Accenture) </a><br>
+            <a href="src/doc/certificate/summer-workshop-gfg.pdf" target="_blank">Summer Workshop (GFG)</a><br>
+            <a href="src/doc/certificate/ethical-hacker-cisco.pdf" target="_blank">Ethical hacker (Cisco) </a><br>
+            <a href="src/doc/certificate/cybersecurity-cisco.pdf" target="_blank">Cyber Security (Cisco) </a><br>
+            <a href="src/doc/certificate/it-essential-cisco.pdf" target="_blank">IT Essential (Cisco) </a><br>
+            <a href="src/doc/certificate/iot-cisco.pdf" target="_blank">IOT (Cisco)</a><br>
             </div>
         `;
         output.appendChild(result);
