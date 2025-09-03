@@ -18,28 +18,32 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     const projectsData = {
-        '1': {
-            title: 'Terminal Based Portfolio',
-            description: 'An interactive portfolio that showcases my skills and projects in a terminal-like interface.',
-            tech: ['HTML5', 'CSS3', 'JavaScript (ES6+)'],
-            live: '#',
-            source: 'https://github.com/rajvikash18113'
-        },
-        '2': {
-            title: 'Smart Stock Portfolio Optimizer',
-            description: 'A web application that helps users manage their stock portfolios efficiently.',
-            tech: ['React', 'Node.js', 'API'],
-            live: '#',
-            source: 'https://github.com/rajvikash18113'
-        },
-        '3': {
-            title: 'Daily Task Tracker',
-            description: 'A simple task management app to keep track of daily tasks.',
-            tech: ['JavaScript', 'HTML', 'CSS'],
-            live: '#',
-            source: 'https://github.com/rajvikash18113'
-        }
-    };
+    '1': {
+        title: 'Terminal Based Portfolio',
+        description1: 'An interactive portfolio with a terminal-like interface.',
+        description2: 'A personal portfolio designed to mimic a terminal environment. It allows users to explore my skills, projects, and achievements using command-style interactions, giving a unique and engaging developer-themed experience.',
+        tech: ['HTML5', 'CSS3', 'JavaScript'],
+        live: 'https://rajvikash18113.github.io/cmd-portfolio',  
+        source: 'https://github.com/rajvikash18113/cmd-portfolio'
+    },
+    '2': {
+        title: 'Smart Stock Portfolio Optimizer',
+        description1: 'A web app for managing stock portfolios efficiently.',
+        description2: 'A stock portfolio management tool that helps users track, analyze, and optimize their investments. It provides insights on portfolio performance, diversification, and helps users make better financial decisions with ease of use.',
+        tech: ['JavaScript', 'HTML5', 'CSS3'],
+        live: 'https://rajvikash18113.github.io/Smart-Stock-Portfolio-Optimizer', 
+        source: 'https://github.com/rajvikash18113/Smart-Stock-Portfolio-Optimizer'
+    },
+    '3': {
+        title: 'Daily Task Tracker',
+        description1: 'A simple task management app.',
+        description2: 'A productivity-focused task tracker that allows users to add, update, and manage their daily tasks. It provides a clean interface to stay organized and boost efficiency by keeping track of pending and completed tasks.',
+        tech: ['JavaScript', 'HTML5', 'CSS3'],
+        live: 'https://rajvikash18113.github.io/Daily-Task-Tracker',  
+        source: 'https://github.com/rajvikash18113/Daily-Task-Tracker'
+    }
+};
+
 
     let commandHistory = [];
     let historyIndex = 0;
@@ -162,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
             allProjectsHTML += `
                 <div class="output-box">
                     <h4>${id}. ${project.title}</h4>
-                    <p>${project.description}</p>
+                    <p>${project.description1}</p>
                     <span class="prompt-text">Type "project ${id}" for details</span>
                 </div>
             `;
@@ -181,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
             result.innerHTML = `
             <div class="output-box">
                 <h3>${project.title}</h3>
-                <p>${project.description}</p>
+                <p>${project.description2}</p>
                 <div class="project-detail-tech-stack">${techHTML}</div>
                 <div class="project-detail-links">
                     <a href="${project.live}" target="_blank">Live Demo</a>
