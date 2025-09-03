@@ -126,30 +126,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showAbout() {
-        const result = document.createElement('div');
-        result.innerHTML = `
-            <div class="output-box">
-            Hello! I'm Vikash Kumar, a passionate Computer Science undergraduate with a love for solving complex problems and building efficient solutions. I have a strong interest in software development and enjoy bringing ideas to life using technologies like C++, and JavaScript. This passion isn't just academic; I have solved over 500+ coding problems on CodeChef, LeetCode and various platforms. I'm always eager to learn and currently seeking opportunities to apply my problem-solving skills to real-world challenges. Feel free to explore my work or get in touch!
-            </div>
-        `;
-        output.appendChild(result);
-    }
+    const result = document.createElement('div');
+    result.innerHTML = `
+        <div class="output-box">
+            Hello! I'm Vikash Kumar, a Computer Science undergraduate passionate about problem-solving and software development. Skilled in C++ and JavaScript, I’ve solved 500+ coding problems across platforms like LeetCode and CodeChef.<br><br>
+            
+            Currently, I serve as the Vice President of the Training Advisory Council (TAC), where I develop leadership, coordination, and teamwork skills. Always eager to learn and build, I’m looking forward to applying my skills to real-world challenges. Feel free to explore my work or get in touch!
+        </div>
+    `;
+    output.appendChild(result);
+}
+
 
     function showSkills() {
-        const result = document.createElement('div');
-        result.innerHTML = `
+    const result = document.createElement('div');
+    result.innerHTML = `
         <div class="output-box">
-            <strong>Languages:</strong> C++, Java, JavaScript, HTML, CSS, SQL <br>
-            <strong>Frameworks & Libraries:</strong> Node.js (Basics), Express.js (Basics), Bootstrap, Tailwind CSS <br>
-            <strong>Tools & Platforms:</strong> Git, GitHub, VS Code, Render, Netlify, Postman <br>
-            <strong>Databases:</strong> MySQL, MongoDB <br>
-            <strong>CS Fundamentals:</strong> Data Structures & Algorithms (C++), DBMS, OOPs, OS, Computer Networks (Basics) <br>
+            <strong>Languages:</strong> C++, Java, JavaScript, HTML, CSS, SQL
+            <p><strong>Frameworks & Libraries:</strong> Node.js (Basics), Express.js (Basics), Bootstrap, Tailwind CSS</p>
+            <p><strong>Tools & Platforms:</strong> Git, GitHub, VS Code, Render, Netlify</p>
+            <p><strong>Databases:</strong> MySQL, MongoDB</p>
+            <p><strong>CS Fundamentals:</strong> Data Structures & Algorithms (C++), DBMS, OOPs, OS, Computer Networks (Basics)</p>
             <strong>Others:</strong> API Integration, RESTful APIs, Problem Solving (Leetcode, GFG), Version Control
-
         </div>
-        `;
-        output.appendChild(result);
-    }
+    `;
+    output.appendChild(result);
+}
+
 
     function showProjects() {
         const result = document.createElement('div');
@@ -236,6 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         output.appendChild(result);
     }
+
 
     function showContact() {
         const result = document.createElement('div');
